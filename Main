@@ -1,0 +1,100 @@
+package com.company;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+
+    public static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        Bank bank = new Bank("Generic");
+        boolean running = true;
+        System.out.println("Welcome to " + bank.getName() + " Bank!");
+        printInstruction();
+        while (running){
+            System.out.println("Choose your option!");
+            int option = scanner.nextInt();
+            scanner.nextLine();
+            switch (option){
+                case 0:
+                    printInstruction();
+                    break;
+                case 1:
+                    addBranch(bank);
+                    break;
+                case 2:
+                    addCustomerToBranch(bank);
+                    break;
+                case 3:
+                    showCustomerList(bank);
+                    break;
+                case 4:
+                    addTransaction(bank);
+                    break;
+                case 5:
+                    running = exit();
+                    break;
+
+            }
+        }
+    }
+
+
+    public static void addBranch (Bank bank){
+        System.out.println("Type name:");
+        String name = scanner.nextLine();
+        bank.addNewBranch(new Branch(name));
+    }
+
+    public static void addCustomerToBranch (Bank bank){
+        System.out.println("Type branch name:");
+        String branchName = scanner.nextLine();
+        System.out.println("Type customer name:");
+        String customerName = scanner.nextLine();
+        System.out.println("Type initial transaction:");
+        double trans = scanner.nextDouble();
+        scanner.nextLine();
+        Double transaction = trans;
+        bank.addCustomerToBranch(branchName, new Customer(customerName, new ArrayList<>(List.of(transaction))));
+    }
+
+    public static void showCustomerList (Bank bank){
+        System.out.println("Type branch name: ");
+        String branchName = scanner.nextLine();
+        System.out.println("With transaction? y/n");
+        String answer = scanner.nextLine();
+        if (answer.equals("n")){
+            bank.showCustomers(branchName);
+        } else {
+            bank.showCustomersWithTransactions(branchName);
+        }
+    }
+
+    public static void addTransaction (Bank bank){
+        System.out.println("Type branch");
+        String branchName = scanner.nextLine();
+        System.out.println("Type customer");
+        String customerName = scanner.nextLine();
+        System.out.println("Type money");
+        double money = scanner.nextDouble();
+        scanner.nextLine();
+        bank.addNewTransaction(branchName,customerName, money);
+    }
+
+    public static void printInstruction(){
+        System.out.println("0 - print instruction");
+        System.out.println("1 - add new branch");
+        System.out.println("2 - add customer to given branch");
+        System.out.println("3 - show customer list");
+        System.out.println("4 - add transaction");
+        System.out.println("5 - exit");
+    }
+
+    public static boolean exit(){
+        System.out.println("Shutting down");
+        return false;
+    }
+
+}
